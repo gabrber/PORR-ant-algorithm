@@ -134,7 +134,7 @@ Every ant make step based on pheromone intensity.
 Basically we create a list of possible ways with their pheromone intensity i.e p = [1,2,3,2,2] and than we normalized it so the sum would be 1, p = [1,2,3,2,2] -> p_norm = [0.1,0.2,0.3,0.2,0.2] (sum(p_norm) = 1). And than we randomly choose from p_norm distribution (so it is also possible to choose path with 0.1 probability, but the most probable option would be path with 0.3 probability).
 When an ant would find it's destiny it would go back to the nest.
 Every ant leave it's pheromone proportionally to 1/distance_covered - so the pheromones which were left by ant which distance_covered were the shortest one would be the most intense.
-
+'''
 PSEUDO CODE:
 generate all variables
 iteration loop
@@ -146,4 +146,4 @@ iteration loop
          if yes change shortest_path to path which were chosen      
    decay pheromones
 return shortest_path
-
+'''
