@@ -8,7 +8,7 @@ ACO (http://atol.am.gdynia.pl/~tomera/publikacje/PTETiS_2015a_Tomera.pdf) do wyz
 szybkość  algorytmu. Przedstawić  graficznie  zbieżność  obu  algorytmów  w  wersji sekwencyjnej – wartości funkcji celu w kolejnych iteracjach.
 
 
-### How to start (Ubuntu)
+### How to start - Hadoop (Ubuntu)
 1. Install java: 
 ```
 sudo add-apt-repository ppa:webupd8team/java
@@ -124,6 +124,45 @@ start-all.sh
 Hadoop services: http://localhost:50070/
 
 Hadoop cluster: http://localhost:8088/
+
+### Apache Spark
+1. Install java if not installed
+2. Install Apache Spark
+```
+wget https://www-us.apache.org/dist/spark/spark-2.3.2/spark-2.3.2-bin-hadoop2.7.tgz
+tar -xzvf spark-2.3.2-bin-hadoop2.7.tgz
+sudo mv spark-2.3.2-bin-hadoop2.7 /usr/local/spark
+```
+3. Add environment variables
+```
+export SPARK_HOME=/usr/local/spark
+
+source ~/.bashrc
+```
+4. Start standalone master server
+```
+$SPARK_HOME/sbin/start-master.sh
+```
+5. Verify installation
+
+http://127.0.0.1:8080/
+
+#### PySpark
+PySpark is the Python API for Spark.
+
+1. Install PySpark
+```
+pip3 install pyspark
+```
+2. TESTING
+
+2.1 cahnge *conf.setMaster* in spark/test.py
+
+2.2 Run script
+```
+python3 spark/test.py
+```
+2.3 Check results on http://127.0.0.1:8080/
 
 ## ACO algorithm
 
