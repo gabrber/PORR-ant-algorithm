@@ -147,6 +147,23 @@ $SPARK_HOME/sbin/start-master.sh
 
 http://127.0.0.1:8080/
 
+#### PySpark
+PySpark is the Python API for Spark.
+
+1. Install PySpark
+```
+pip3 install pyspark
+```
+2. TESTING
+
+2.1 cahnge *conf.setMaster* in spark/test.py
+
+2.2 Run script
+```
+python3 spark/test.py
+```
+2.3 Check results on http://127.0.0.1:8080/
+
 ## ACO algorithm
 
 A basic assumption of an Ant Colony Optimization is that by updating probability of every decision we would find the opimal (or close to optimal solution).
