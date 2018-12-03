@@ -1,12 +1,12 @@
-10 n_ants, 4 iterations
+50 n_ants, 4 iterations
 run()
--- 0.1970229148864746 seconds ---
+--- 0.11037802696228027 seconds ---
 run_multiprocessing()
---- 0.229766845703125 seconds ---
+--- 0.23857903480529785 seconds ---
 run_threading()
---- 0.1970229148864746 seconds ---
+--- 0.19762754440307617 seconds ---
 run_threading2()
--- 0.1970229148864746 seconds ---
+--- 0.8967177867889404 seconds ---
 
 500 n_ants, 4 iterations
 run()
