@@ -1,0 +1,19 @@
+10 n_ants, 4 iterations
+run()
+-- 0.1970229148864746 seconds ---
+run_multiprocessing()
+--- 0.229766845703125 seconds ---
+run_threading()
+--- 0.1970229148864746 seconds ---
+run_threading2()
+-- 0.1970229148864746 seconds ---
+
+500 n_ants, 4 iterations
+run()
+--- 0.9454469680786133 seconds ---
+run_multiprocessing()
+??? aż się zacina
+run_threading()
+--- 4.860195636749268 seconds ---
+run_threading2()
+--- 6.850257873535156 seconds ---

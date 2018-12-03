@@ -56,10 +56,10 @@ class AntColony():
             all_paths = self.gen_all_paths_multiprocessing()
             self.spread_pheronome(all_paths, self.n_best, shortest_path=shortest_path)
             shortest_path = min(all_paths, key=lambda x: x[1])
-            print("----------------")
-            print("The best in iteration is:")
+            #print("----------------")
+            #print("The best in iteration is:")
             print(shortest_path)
-            print("----------------")
+            #print("----------------")
             if shortest_path[1] < all_time_shortest_path[1]:
                 all_time_shortest_path = shortest_path
             self.pheromone * self.decay
@@ -72,10 +72,10 @@ class AntColony():
             all_paths = self.gen_all_paths_threading()
             self.spread_pheronome(all_paths, self.n_best, shortest_path=shortest_path)
             shortest_path = min(all_paths, key=lambda x: x[1])
-            print("----------------")
-            print("The best in iteration is:")
+            #print("----------------")
+            #print("The best in iteration is:")
             print(shortest_path)
-            print("----------------")
+            #print("----------------")
             if shortest_path[1] < all_time_shortest_path[1]:
                 all_time_shortest_path = shortest_path
             self.pheromone * self.decay
@@ -88,10 +88,10 @@ class AntColony():
             all_paths = self.gen_all_paths_threading2()
             self.spread_pheronome(all_paths, self.n_best, shortest_path=shortest_path)
             shortest_path = min(all_paths, key=lambda x: x[1])
-            print("----------------")
-            print("The best in iteration is:")
+            #print("----------------")
+            #print("The best in iteration is:")
             print(shortest_path)
-            print("----------------")
+            #print("----------------")
             if shortest_path[1] < all_time_shortest_path[1]:
                 all_time_shortest_path = shortest_path
             self.pheromone * self.decay
@@ -132,12 +132,12 @@ class AntColony():
         return all_paths
 
     def for_multiprocessing(self, output):
-        print(tr.get_ident())
+        #print(tr.get_ident())
         sp.random.seed()
         path = self.gen_path(0)
         path_length = self.gen_path_dist(path)
         path_length_print = (path,path_length)
-        print(path_length_print)
+        #print(path_length_print)
         output.put((path,path_length))
 
     def gen_all_paths_threading(self):
@@ -175,7 +175,7 @@ class AntColony():
         path = self.gen_path(0)
         path_length = self.gen_path_dist(path)
         path_length_print = (path,path_length)
-        print(path_length_print)
+        #print(path_length_print)
         return((path,path_length))
 
     def gen_path(self, start):
