@@ -2,6 +2,8 @@ import random as rn
 import numpy as np
 import scipy as sp
 import multiprocessing as mp
+import threading as tr
+from multiprocessing.pool import ThreadPool
 from numpy.random import choice as np_choice
 
 
@@ -63,6 +65,38 @@ class AntColony():
             self.pheromone * self.decay
         return all_time_shortest_path
 
+    def run_threading(self):
+        shortest_path = None
+        all_time_shortest_path = ("placeholder", np.inf)
+        for i in range(self.n_iterations):
+            all_paths = self.gen_all_paths_threading()
+            self.spread_pheronome(all_paths, self.n_best, shortest_path=shortest_path)
+            shortest_path = min(all_paths, key=lambda x: x[1])
+            print("----------------")
+            print("The best in iteration is:")
+            print(shortest_path)
+            print("----------------")
+            if shortest_path[1] < all_time_shortest_path[1]:
+                all_time_shortest_path = shortest_path
+            self.pheromone * self.decay
+        return all_time_shortest_path
+
+    def run_threading2(self):
+        shortest_path = None
+        all_time_shortest_path = ("placeholder", np.inf)
+        for i in range(self.n_iterations):
+            all_paths = self.gen_all_paths_threading2()
+            self.spread_pheronome(all_paths, self.n_best, shortest_path=shortest_path)
+            shortest_path = min(all_paths, key=lambda x: x[1])
+            print("----------------")
+            print("The best in iteration is:")
+            print(shortest_path)
+            print("----------------")
+            if shortest_path[1] < all_time_shortest_path[1]:
+                all_time_shortest_path = shortest_path
+            self.pheromone * self.decay
+        return all_time_shortest_path
+
     def spread_pheronome(self, all_paths, n_best, shortest_path):
         sorted_paths = sorted(all_paths, key=lambda x: x[1])
         for path, dist in sorted_paths[:n_best]:
@@ -98,12 +132,51 @@ class AntColony():
         return all_paths
 
     def for_multiprocessing(self, output):
+        print(tr.get_ident())
         sp.random.seed()
         path = self.gen_path(0)
         path_length = self.gen_path_dist(path)
         path_length_print = (path,path_length)
         print(path_length_print)
         output.put((path,path_length))
+
+    def gen_all_paths_threading(self):
+
+        threads = [tr.Thread(target=self.for_multiprocessing, args=(output,)) for x in range(self.n_ants)]
+
+        for t in threads:
+            t.start()
+
+        for t in threads:
+            t.join()
+
+        # Get process results from the output queue
+        all_paths = [output.get() for t in threads]
+        return all_paths
+
+    def gen_all_paths_threading2(self):
+
+        nr_threads = self.n_ants
+        all_paths = []
+        pool = ThreadPool(nr_threads)
+
+        for i in range(nr_threads):
+            all_paths.append(pool.apply_async(self.for_threading, (i,)))
+
+        # Get process results from the output queue
+        all_paths = [r.get() for r in all_paths]
+        pool.close()
+        pool.join()
+        return all_paths
+
+    def for_threading(self, id):
+        #print("Worker nr: " + str(id))
+        sp.random.seed()
+        path = self.gen_path(0)
+        path_length = self.gen_path_dist(path)
+        path_length_print = (path,path_length)
+        print(path_length_print)
+        return((path,path_length))
 
     def gen_path(self, start):
         path = []
