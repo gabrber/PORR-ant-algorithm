@@ -1,8 +1,14 @@
 import random as rn
 import numpy as np
+import scipy as sp
+import multiprocessing as mp
 from numpy.random import choice as np_choice
 
+
+output = mp.Queue()
+
 class AntColony():
+
 
     def __init__(self, distances, n_ants, n_best, n_iterations, decay, alpha=1, beta=1):
         """
@@ -17,6 +23,7 @@ class AntColony():
         Example:
             ant_colony = AntColony(german_distances, 100, 20, 2000, 0.95, alpha=1, beta=2)
         """
+
         self.distances = distances
         self.pheromone = np.ones(self.distances.shape) / len(distances)
         self.all_inds = range(len(distances))
@@ -35,6 +42,22 @@ class AntColony():
             self.spread_pheronome(all_paths, self.n_best, shortest_path=shortest_path)
             shortest_path = min(all_paths, key=lambda x: x[1])
             print(shortest_path)
+            if shortest_path[1] < all_time_shortest_path[1]:
+                all_time_shortest_path = shortest_path
+            self.pheromone * self.decay
+        return all_time_shortest_path
+
+    def run_multiprocessing(self):
+        shortest_path = None
+        all_time_shortest_path = ("placeholder", np.inf)
+        for i in range(self.n_iterations):
+            all_paths = self.gen_all_paths_multiprocessing()
+            self.spread_pheronome(all_paths, self.n_best, shortest_path=shortest_path)
+            shortest_path = min(all_paths, key=lambda x: x[1])
+            print("----------------")
+            print("The best in iteration is:")
+            print(shortest_path)
+            print("----------------")
             if shortest_path[1] < all_time_shortest_path[1]:
                 all_time_shortest_path = shortest_path
             self.pheromone * self.decay
@@ -59,6 +82,29 @@ class AntColony():
             all_paths.append((path, self.gen_path_dist(path)))
         return all_paths
 
+    def gen_all_paths_multiprocessing(self):
+
+        processes = [mp.Process(target=self.for_multiprocessing, args=(output,)) for x in range(self.n_ants)]
+
+        for p in processes:
+            p.start()
+            #print(p.pid)
+
+        for p in processes:
+            p.join()
+
+        # Get process results from the output queue
+        all_paths = [output.get() for p in processes]
+        return all_paths
+
+    def for_multiprocessing(self, output):
+        sp.random.seed()
+        path = self.gen_path(0)
+        path_length = self.gen_path_dist(path)
+        path_length_print = (path,path_length)
+        print(path_length_print)
+        output.put((path,path_length))
+
     def gen_path(self, start):
         path = []
         visited = set()
@@ -81,3 +127,4 @@ class AntColony():
         norm_row = row / row.sum()
         move = np_choice(self.all_inds, 1, p=norm_row)[0]
         return move
+
