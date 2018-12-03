@@ -1,4 +1,4 @@
-50 n_ants, 4 iterations
+10x10 matrix, 50 n_ants, 4 iterations
 run()
 --- 0.11037802696228027 seconds ---
 run_multiprocessing()
@@ -8,7 +8,7 @@ run_threading()
 run_threading2()
 --- 0.8967177867889404 seconds ---
 
-500 n_ants, 4 iterations
+10x10 matrix, 500 n_ants, 4 iterations
 run()
 --- 0.9454469680786133 seconds ---
 run_multiprocessing()
@@ -17,3 +17,12 @@ run_threading()
 --- 4.860195636749268 seconds ---
 run_threading2()
 --- 6.850257873535156 seconds ---
+
+1000x1000 matrix, 500 n_ants, 4 iterations
+run()
+--- 361.4398367404938 seconds ---
+
+run_threading2()
+--- 600.2290897369385 seconds ---
+
+Pozostalych nie sprawdzalam, ale jak widac zaczyna miec to sens przy wiekszej ilosci wezlow.
