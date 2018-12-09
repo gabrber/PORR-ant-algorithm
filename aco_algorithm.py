@@ -3,12 +3,11 @@ from numpy.random import choice as np_choice
 
 class AntColony():
 
-    def __init__(self, distances, n_ants, n_best, n_iterations, decay, alpha=1, beta=1):
+    def __init__(self, distances, n_ants, n_iterations, decay, alpha=1, beta=1):
         """
         Args:
             distances (2D numpy.array): Square matrix of distances. Diagonal is assumed to be np.inf.
             n_ants (int): Number of ants running per iteration
-            n_best (int): Number of best ants who deposit pheromone
             n_iteration (int): Number of iterations
             decay (float): Rate it which pheromone decays. The pheromone value is multiplied by decay, so 0.95 will lead to decay, 0.5 to much faster decay.
             alpha (int or float): exponenet on pheromone, higher alpha gives pheromone more weight. Default=1
@@ -22,7 +21,6 @@ class AntColony():
         self.pheromone = np.ones(self.distances.shape) / len(distances)
         self.all_inds = range(len(distances))
         self.n_ants = n_ants
-        self.n_best = n_best
         self.n_iterations = n_iterations
         self.decay = decay
         self.alpha = alpha
@@ -41,7 +39,7 @@ class AntColony():
         all_time_shortest_path = ("placeholder", np.inf)
         for i in range(self.n_iterations):
             all_paths = self.gen_all_paths() #here we generate all paths from all ants
-            self.spread_pheronome(all_paths, self.n_best)
+            self.spread_pheronome(all_paths)
             shortest_path = min(all_paths, key=lambda x: x[1])
             print(shortest_path)
             if shortest_path[1] < all_time_shortest_path[1]:
@@ -70,9 +68,9 @@ class AntColony():
                 break
         return path
 
-    def spread_pheronome(self, all_paths, n_best):
+    def spread_pheronome(self, all_paths):
         sorted_paths = sorted(all_paths, key=lambda x: x[1])
-        for path, dist in sorted_paths[:n_best]:
+        for path, dist in sorted_paths:
             for move in path:
                 self.pheromone[move] += 1.0 / self.distances[move]
 
