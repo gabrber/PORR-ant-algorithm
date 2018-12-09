@@ -16,5 +16,5 @@ for i in range(N):
 
 ant_colony = AntColony(rand_dist, 5, 1, 5, 0.95, alpha=1, beta=1)
 #ant_colony = AntColony(distances, 1, 1, 5, 0.95, alpha=1, beta=1)
-shortest_path = ant_colony.run()
+shortest_path = ant_colony.run(0, 5)
 print(shortest_path)
