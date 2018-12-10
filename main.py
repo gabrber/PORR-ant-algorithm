@@ -2,6 +2,8 @@ import numpy as np
 
 from aco_algorithm import AntColony
 
+np.random.seed(42)
+
 distances = np.array([[np.inf, 1, 1.5, 1, 3],
                       [1, np.inf, 1, 1.5, 2],
                       [1.5, 1, np.inf, 1, 1],

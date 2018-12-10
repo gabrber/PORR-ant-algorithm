@@ -39,12 +39,12 @@ class AntColony():
         all_time_shortest_path = ("placeholder", np.inf)
         for i in range(self.n_iterations):
             all_paths = self.gen_all_paths() #here we generate all paths from all ants
+            self.pheromone *= self.decay
             self.spread_pheronome(all_paths)
             shortest_path = min(all_paths, key=lambda x: x[1])
             print(shortest_path)
             if shortest_path[1] < all_time_shortest_path[1]:
                 all_time_shortest_path = shortest_path
-            self.pheromone *= self.decay
         return all_time_shortest_path
 
     def gen_all_paths(self):
@@ -86,7 +86,6 @@ class AntColony():
         pheromone[list(visited)] = 0
 
         row = pheromone ** self.alpha * (( 1.0 / dist) ** self.beta)
-
         norm_row = row / row.sum()
         move = np_choice(self.all_inds, 1, p=norm_row)[0]
         return move
