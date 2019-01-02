@@ -18,14 +18,13 @@ class AntColony():
             ant_colony = AntColony(german_distances, 100, 20, 2000, 0.95, alpha=1, beta=2)
         """
         self.distances = distances
-        self.pheromone = np.ones(self.distances.shape) / len(distances)
+        self.pheromone = pheromone
         self.all_inds = range(len(distances))
         self.n_ants = n_ants
         self.n_iterations = n_iterations
         self.decay = decay
         self.alpha = alpha
         self.beta = beta
-
 
     def run(self, start_num, end_num):
         """
