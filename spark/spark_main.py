@@ -9,7 +9,7 @@ from aco_algorithm import AntColony
 
 # spark config
 conf = SparkConf()
-conf.setMaster('spark://gabriela-TM1703:7077')
+conf.setMaster('spark://52120768ea4b:7077')
 conf.setAppName('spark-basic')
 sc = SparkContext(conf=conf)
 
@@ -27,14 +27,13 @@ for i in range((int) (N/10)):
 # read data
 data_file = "./files/input.txt"
 raw_data = sc.textFile(data_file)
+pheromone = np.ones(rand_dist.shape) / len(rand_dist)
 
 # ant colony object
-ant_colony = AntColony(rand_dist, 1, 1, 0.95, alpha=1, beta=1)
+ant_colony = AntColony(rand_dist, 1, 1, 0.95, pheromone, alpha=1, beta=1)
 
 # number of parallel nodes
 no_parallel_instances = sc.parallelize(range(100))
-
-
 
 # run
 res = no_parallel_instances.map(lambda row: ant_colony.run(0, 5))
