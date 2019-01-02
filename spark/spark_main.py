@@ -22,10 +22,10 @@ json_str = json_file.read()
 json_data = json.loads(json_str)
 
 distances = np.asarray(json_data['distances'])
-pheromone = np.ones(distances.shape) / len(distances)
+pheromones = np.asarray(json_data['pheromones'])
 
 # ant colony object
-ant_colony = AntColony(distances, json_data['n_ants'], json_data['n_iterations'], json_data['decay'], pheromone, json_data['alpha'], json_data['beta'])
+ant_colony = AntColony(distances, json_data['n_ants'], json_data['n_iterations'], json_data['decay'], pheromones, json_data['alpha'], json_data['beta'])
 
 # number of parallel nodes
 no_parallel_instances = sc.parallelize(range(100))

@@ -19,6 +19,7 @@ dic['distances'] = rand_dist.tolist()
 # Add initial pheromone
 
 pheromones = np.ones(rand_dist.shape) / len(rand_dist)
+dic['pheromones'] = pheromones.tolist()
 
 # Save to file as json
 
