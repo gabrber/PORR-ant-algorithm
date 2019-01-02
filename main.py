@@ -25,7 +25,8 @@ for i in range((int) (N/10)):
 
 start_time = time.time()
 
-ant_colony = AntColony(rand_dist, 20, 100, 0.95, alpha=1, beta=1)
+pheromone = np.ones(self.distances.shape) / len(rand_dist)
+ant_colony = AntColony(rand_dist, 20, 100, 0.95, pheromone, alpha=1, beta=1)
 #ant_colony = AntColony(distances, 1, 1, 5, 0.95, alpha=1, beta=1)
 shortest_path = ant_colony.run(0, 5)
 

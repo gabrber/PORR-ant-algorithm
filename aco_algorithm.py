@@ -3,7 +3,7 @@ from numpy.random import choice as np_choice
 
 class AntColony():
 
-    def __init__(self, distances, n_ants, n_iterations, decay, alpha=1, beta=1):
+    def __init__(self, distances, n_ants, n_iterations, decay, pheromone, alpha=1, beta=1):
         """
         Args:
             distances (2D numpy.array): Square matrix of distances. Diagonal is assumed to be np.inf.

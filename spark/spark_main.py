@@ -34,6 +34,8 @@ ant_colony = AntColony(rand_dist, 1, 1, 0.95, alpha=1, beta=1)
 # number of parallel nodes
 no_parallel_instances = sc.parallelize(range(100))
 
+
+
 # run
 res = no_parallel_instances.map(lambda row: ant_colony.run(0, 5))
 #res = no_parallel_instances.map(lambda row: simulate(row))
