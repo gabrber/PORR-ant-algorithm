@@ -14,7 +14,7 @@ for i in range(N):
     rand_dist[i][i] = np.inf
 print(rand_dist)
 
-dic['distances'] = json.dumps(rand_dist.tolist())
+dic['distances'] = rand_dist.tolist()
 
 # Add initial pheromone
 

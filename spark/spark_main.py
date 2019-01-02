@@ -3,6 +3,9 @@ from pyspark import SparkConf
 from pyspark import SparkContext
 
 # ACO code
+import json
+import ast
+
 import numpy as np
 from random import randrange
 from aco_algorithm import AntColony
@@ -13,24 +16,16 @@ conf.setMaster('spark://52120768ea4b:7077')
 conf.setAppName('spark-basic')
 sc = SparkContext(conf=conf)
 
-N = 10
-rand_matrix = np.random.random_integers(1,100,size=(N,N))
-rand_dist = (rand_matrix + rand_matrix.T)/2
-for i in range(N):
-    rand_dist[i][i] = np.inf
-for i in range((int) (N/10)):
-    j = randrange(0,N-1)
-    k = randrange(0,N-1)
-    rand_dist[j][k] = np.inf
-    rand_dist[k][j] = np.inf
-
 # read data
-data_file = "./files/input.txt"
-raw_data = sc.textFile(data_file)
-pheromone = np.ones(rand_dist.shape) / len(rand_dist)
+json_file = open('/home/PORR-ant-algorithm/spark/files/input.txt')
+json_str = json_file.read()
+json_data = json.loads(json_str)
+
+distances = np.asarray(json_data['distances'])
+pheromone = np.ones(distances.shape) / len(distances)
 
 # ant colony object
-ant_colony = AntColony(rand_dist, 1, 1, 0.95, pheromone, alpha=1, beta=1)
+ant_colony = AntColony(distances, json_data['n_ants'], json_data['n_iterations'], json_data['decay'], pheromone, json_data['alpha'], json_data['beta'])
 
 # number of parallel nodes
 no_parallel_instances = sc.parallelize(range(100))
@@ -44,9 +39,3 @@ for i in collected:
     print(i)
 print(res.count())
 print("finished")
-
-#ant_colony = AntColony(rand_dist, 20, 100, 0.95, alpha=1, beta=1)
-#shortest_path = ant_colony.run(0, 5)
-
-#print("--- Final result is: ---")
-#print(shortest_path)
