@@ -10,9 +10,14 @@ from aco_algorithm import AntColony
 
 # spark config
 conf = SparkConf()
-conf.setMaster('spark://52120768ea4b:7077')
+conf.setMaster('spark://c49877fd8c0d:7077')
 conf.setAppName('spark-basic')
 sc = SparkContext(conf=conf)
+
+def run_spark():
+  ant_colony = AntColony(distances, json_data['n_ants'], json_data['n_iterations'], json_data['decay'], pheromones, json_data['alpha'], json_data['beta'])
+  update = ant_colony.run_get_pheromone(json_data['start_point'], json_data['end_point'])
+  return update
 
 # read data
 json_file = open('/home/PORR-ant-algorithm/spark/files/input.txt')
@@ -23,19 +28,18 @@ distances = np.asarray(json_data['distances'])
 pheromones = np.asarray(json_data['pheromones'])
 
 # ant colony object
-ant_colony = AntColony(distances, json_data['n_ants'], json_data['n_iterations'], json_data['decay'], pheromones, json_data['alpha'], json_data['beta'])
+# ant_colony = AntColony(distances, json_data['n_ants'], json_data['n_iterations'], json_data['decay'], pheromones, json_data['alpha'], json_data['beta'])
 
 # SPARK
 # number of parallel runs
 no_parallel_instances = sc.parallelize(range(2))
 
 # run
-parallel_runs = no_parallel_instances.map(lambda row: ant_colony.run_get_pheromone(json_data['start_point'], json_data['end_point']))
-add_pheromone = parallel_runs.reduce(lambda a, b: a + b)
+add_pheromone = no_parallel_instances.map(lambda row: run_spark()).reduce(lambda a, b: a + b)
 
 # get results and update pheromone
-collected = parallel_runs.collect()
-parallel_runs.count()
+#collected = parallel_runs.collect()
+#parallel_runs.count()
 
 pheromones += add_pheromone
 #print(add_pheromone)
