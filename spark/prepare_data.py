@@ -3,8 +3,8 @@ import json
 
 # Basic initial data
 
-dic = {'n_ants': 5, 'n_iterations': 50, 'decay': 0.95, 'alpha': 1, 'beta': 1, 'start_point': 0, 'end_point': 5}
-N = 100
+dic = {'n_ants': 100, 'n_iterations': 5, 'decay': 0.95, 'alpha': 1, 'beta': 1, 'start_point': 0, 'end_point': 5}
+N = 1000
 
 # Generate random distance matrix
 

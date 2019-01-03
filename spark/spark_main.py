@@ -41,7 +41,7 @@ pheromones += add_pheromone
 #print(add_pheromone)
 
 # final ACO
-ant_colony_final = AntColony(distances, 1, 1, json_data['decay'], pheromones, json_data['alpha'], json_data['beta'])
+ant_colony_final = AntColony(distances, json_data['n_ants'], 1, json_data['decay'], pheromones, json_data['alpha'], json_data['beta'])
 shortest_path = ant_colony_final.run(json_data['start_point'], json_data['end_point'])
 
 print("***********************")
