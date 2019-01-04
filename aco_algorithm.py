@@ -3,7 +3,7 @@ from numpy.random import choice as np_choice
 
 class AntColony():
 
-    def __init__(self, distances, n_ants, n_iterations, decay, alpha=1, beta=1):
+    def __init__(self, distances, n_ants, n_iterations, decay, pheromone, alpha=1, beta=1):
         """
         Args:
             distances (2D numpy.array): Square matrix of distances. Diagonal is assumed to be np.inf.
@@ -18,14 +18,14 @@ class AntColony():
             ant_colony = AntColony(german_distances, 100, 20, 2000, 0.95, alpha=1, beta=2)
         """
         self.distances = distances
-        self.pheromone = np.ones(self.distances.shape) / len(distances)
+        self.pheromone = pheromone
         self.all_inds = range(len(distances))
         self.n_ants = n_ants
         self.n_iterations = n_iterations
         self.decay = decay
         self.alpha = alpha
         self.beta = beta
-
+        self.add_pheromone = np.zeros(distances.shape)
 
     def run(self, start_num, end_num):
         """
@@ -46,6 +46,27 @@ class AntColony():
             if shortest_path[1] < all_time_shortest_path[1]:
                 all_time_shortest_path = shortest_path
         return all_time_shortest_path
+
+    def run_get_pheromone(self, start_num, end_num):
+        """
+        Args:
+            start_num (int): number which represent a start position (nest)
+            end_num (int): number which represent end position (food)
+            """
+        self.start_num = start_num
+        self.end_num = end_num
+        shortest_path = None
+        all_time_shortest_path = ("placeholder", np.inf)
+        for i in range(self.n_iterations):
+            all_paths = self.gen_all_paths() #here we generate all paths from all ants
+            self.pheromone *= self.decay
+            self.add_pheromone *= self.decay
+            self.spread_pheronome(all_paths)
+            shortest_path = min(all_paths, key=lambda x: x[1])
+            print(shortest_path)
+            if shortest_path[1] < all_time_shortest_path[1]:
+                all_time_shortest_path = shortest_path
+        return self.add_pheromone
 
     def gen_all_paths(self):
         all_paths = []
@@ -73,6 +94,7 @@ class AntColony():
         for path, dist in sorted_paths:
             for move in path:
                 self.pheromone[move] += 1.0 / self.distances[move]
+                self.add_pheromone[move] += 1.0 / self.distances[move]
 
     def gen_path_dist(self, path):
         total_dist = 0
