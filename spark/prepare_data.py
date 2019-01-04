@@ -8,7 +8,7 @@ N = 1000
 
 # Generate random distance matrix
 
-rand_matrix = np.random.random_integers(1,10,size=(N,N))
+rand_matrix = np.random.random_integers(1,1000,size=(N,N))
 rand_dist = (rand_matrix + rand_matrix.T)/2
 for i in range(N):
     rand_dist[i][i] = np.inf
