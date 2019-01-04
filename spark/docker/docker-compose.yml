@@ -45,3 +45,14 @@ services:
     - "SPARK_MASTER=spark://spark-master:7077"
     - "constraint:node==spark-worker-3"
     mem_limit: 1G
+  spark-worker-4:
+    build: worker
+    container_name: spark-worker-4
+    depends_on:
+    - spark-master
+    ports:
+    - "8084:8081"
+    environment:
+    - "SPARK_MASTER=spark://spark-master:7077"
+    - "constraint:node==spark-worker-4"
+    mem_limit: 1G    
