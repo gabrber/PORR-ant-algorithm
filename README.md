@@ -187,3 +187,21 @@ iteration loop
    decay pheromones
 return shortest_path
 ```
+#### Run in Apache Spark
+Prerequisites: docker, cocker-compose
+
+Steps:
+1. run:
+```
+cd spark/docker
+docker-compose up -d
+docker cp ../../../PORR-ant-algorithm spark-master:/home/ 
+docker exec -it spark-master bash
+```
+2. modify master url in /home/PORR-ant-algorithm/spark_main.py to your docker container id
+3. change all variables in /home/PORR-ant-algorithm/prepare_data.py
+3. run:
+```
+python3 prepare_data.py
+$SPARK_HOME/bin/spark-submit --py-files /home/PORR-ant-algorithm/aco_algorithm.py /home/PORR-ant-algorithm/spark/spark_main.py
+```
